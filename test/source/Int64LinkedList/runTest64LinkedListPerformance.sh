@@ -4,14 +4,13 @@ fpc TestInt64LinkedListPerformance.pas
 
 if [ $? != 0 ]
 then
-	echo "Compilation failed"
+	echo "Compilation failed; can not test the performance"
 	exit 1
 fi
 
 count=30000
 
-for i in {1..1}
-do
-	../../compiled/TestInt64LinkedList/TestInt64LinkedListPerformance TList $count
-done
+../../compiled/TestInt64LinkedList/TestInt64LinkedListPerformance TList $count
+../../compiled/TestInt64LinkedList/TestInt64LinkedListPerformance LinkedList $count
+
 

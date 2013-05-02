@@ -2,6 +2,7 @@ program TestInt64LinkedList;
 
 uses
 	Classes, 
+	LinkedList,
 	Int64LinkedList;
 
 procedure Test;

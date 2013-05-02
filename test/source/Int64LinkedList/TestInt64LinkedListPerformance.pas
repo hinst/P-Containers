@@ -4,6 +4,7 @@ uses
 	SysUtils,
 	DateUtils,
 	Classes, 
+	LinkedList,
 	Int64LinkedList;
 	
 const
@@ -35,7 +36,7 @@ begin
 	begin
 		list := TList.Create;
 		for i := 0 to aCount - 1 do
-			list.Add(Pointer(PtrInt(i)));
+			list.Add(Pointer(0));
 		list.Free;
 	end;
 	time := Now - time;
@@ -63,7 +64,7 @@ begin
 	// Prepare list section
 	list := TList.Create;
 	for i := 0 to aCount - 1 do
-		list.Add(Pointer(PtrInt(i)));
+		list.Add(Pointer(0));
 	// Warm Up section
 	for repeatIndex := 1 to WarmUpMultiplier do
 	begin
@@ -81,9 +82,64 @@ begin
 	list.Free;
 end;
 
-procedure TestWithLinkedList(const aCount: Integer);
+function TestAdditionWithLinkedList(const aCount: Integer): TDateTime;
+var
+	list, tail: PInt64LinkedList;
+	repeatIndex, i: Integer;
+	x: Int64;
 begin
-	
+	// Warm up section
+	x := 0;
+	for repeatIndex := 1 to WarmUpMultiplier do
+	begin
+		tail := nil;
+		for i := 0 to aCount - 1 do
+			Append(list, tail, x);
+		DisposeList(list);
+	end;
+	// Dirty section
+	result := Now;
+	for repeatIndex := 1 to Multiplier do
+	begin
+		tail := nil;
+		for i := 0 to aCount - 1 do
+			Append(list, tail, x);
+		DisposeList(list);
+	end;
+	result := Now - result;
+end;
+
+function TestEnumerationWithLinkedList(const aCount: Integer): TDateTime;
+var
+	list, tail: PInt64LinkedList;
+	repeatIndex, i: Integer;
+	x: Int64;
+begin
+	// Prepare list section
+	tail := nil;
+	for i := 0 to aCount - 1 do
+		Append(list, tail, Int64(0));
+	// Warm up section
+	for repeatIndex := 1 to WarmUpMultiplier do
+	begin
+		tail := list;
+		while 
+			Next(tail, x) 
+		do 
+			;
+	end;
+	// Evaluate section
+	result := Now;
+	for repeatIndex := 1 to Multiplier do
+	begin
+		tail := list;
+		while 
+			Next(tail, x) 
+		do 
+			;
+	end;
+	result := Now - result;
+	DisposeList(list);
 end;
 
 var
@@ -104,6 +160,15 @@ begin
 		time := TestEnumerationWithTList(count);
 		WriteLn('Enumeration time: ', TimeToStr(time));
   end;
+  if
+	  kind = 'LinkedList'
+	then
+	begin
+		time := TestAdditionWithLinkedList(count);
+		WriteLn('Addition time: ', TimeToStr(time));
+		time := TestEnumerationWithLinkedList(count);
+		WriteLn('Enumeration time: ', TimeToStr(time));
+	end;
 end.
 
 
