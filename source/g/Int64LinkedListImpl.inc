@@ -1,13 +1,13 @@
-function Create(const aValue: _T): P_LT; inline;
+function Create(const aValue: Int64): PInt64LinkedList; inline;
 begin
   New(result);
   result.Value := aValue;
   result.Next := nil;
 end;
 
-procedure Append(var aList, aTail: P_LT; const aValue: _T);
+procedure Append(var aList, aTail: PInt64LinkedList; const aValue: Int64);
 var
-  item: P_LT;
+  item: PInt64LinkedList;
 begin
   item := Create(aValue);
 	if
@@ -19,7 +19,7 @@ begin
 	aTail := item;
 end;
 
-function Next(var aCurrent: P_LT; out aValue: _T): boolean;
+function Next(var aCurrent: PInt64LinkedList; out aValue: Int64): boolean;
 begin
 	result := aCurrent <> nil;
 	if
@@ -31,9 +31,9 @@ begin
 	end;
 end;
 
-function DisposeList(const aList: P_LT): P_LT;
+function DisposeList(const aList: PInt64LinkedList): PInt64LinkedList;
 var
-  item: P_LT;
+  item: PInt64LinkedList;
 begin
   result := aList;
   while
