@@ -10,7 +10,7 @@ type
 		Next: PLinkedList;
 	end;
 	
-procedure Append(out aList: PLinkedList; var aTail: PLinkedList; const aItem: PLinkedList); overload; inline;
+procedure Append(var aList, aTail: PLinkedList; const aItem: PLinkedList); overload; inline;
 
 function Next(var aCurrent: PLinkedList; out aItem: PLinkedList): Boolean; overload; inline;
 
@@ -18,7 +18,7 @@ procedure DisposeList(const aList: PLinkedList); overload; inline;
 
 implementation
 
-procedure Append(out aList: PLinkedList; var aTail: PLinkedList; const aItem: PLinkedList);
+procedure Append(var aList, aTail: PLinkedList; const aItem: PLinkedList);
 begin
 	if 
 		aTail <> nil
