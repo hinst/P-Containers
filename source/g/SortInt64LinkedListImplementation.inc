@@ -16,22 +16,22 @@ end;
 
 function Sort(list: PInt64LinkedList): PInt64LinkedList;
 var
-	p, q, e, tail, oldhead: PInt64LinkedList;
+	p, q, e, tail: PInt64LinkedList;
 	insize, nmerges, psize, qsize, i: Integer;
 begin
-	if 
+	if
 		nil = list
 	then
 		result := nil
 	else
 	begin
+    result := nil;
 		insize := 1;
 		while
 			True
 		do
 		begin
 			p := list;
-			oldhead := list;
 			list := nil;
 			tail := nil;
 			nmerges := 0;
